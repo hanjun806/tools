@@ -1,7 +1,6 @@
 #/bin/bash
 
-# 安装wget等
-yum -y install lrzsz wget
+yum -y install lrzsz
 
 # 安装docker
 curl -fsSL https://get.docker.com | sh
