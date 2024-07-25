@@ -24,9 +24,11 @@ docker run -itd --network=host \
 --name x-ui --restart=unless-stopped \
 enwaiax/x-ui:alpha-zh
 
-systemctl start firewalld
 
 # 打开防火墙，动态端口处理
+# sudo yum -y install firewalld
+systemctl start firewalld
+
 firewall-cmd --permanent --add-port=22/tcp
 firewall-cmd --permanent --add-port=34521/tcp
 firewall-cmd --permanent --add-forward-port=port=40000-41000:proto=tcp:toport=5001
