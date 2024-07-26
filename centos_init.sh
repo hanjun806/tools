@@ -30,7 +30,7 @@ enwaiax/x-ui:alpha-zh
 systemctl start firewalld
 
 firewall-cmd --permanent --add-port=22/tcp
-firewall-cmd --permanent --add-port=34521/tcp
+firewall-cmd --permanent --add-port=34500-34599/tcp
 firewall-cmd --permanent --add-forward-port=port=40000-41000:proto=tcp:toport=5001
 firewall-cmd --permanent --add-forward-port=port=41000-42000:proto=tcp:toport=5002
 firewall-cmd --permanent --add-forward-port=port=42000-43000:proto=tcp:toport=5011
