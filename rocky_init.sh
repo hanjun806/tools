@@ -38,6 +38,7 @@ firewall-cmd --permanent --add-forward-port=port=41000-42000:proto=tcp:toport=50
 firewall-cmd --permanent --add-forward-port=port=42000-43000:proto=tcp:toport=5011
 firewall-cmd --permanent --add-forward-port=port=43000-44000:proto=tcp:toport=5012
 firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="45.78.17.247" accept'
+firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="199.180.119.109" accept'
 firewall-cmd --reload
 firewall-cmd --list-all
 systemctl restart firewalld
