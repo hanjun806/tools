@@ -28,7 +28,7 @@ enwaiax/x-ui:alpha-zh
 
 
 # 打开防火墙，动态端口处理
-# sudo yum -y install firewalld
+sudo yum -y install firewalld
 systemctl start firewalld
 
 firewall-cmd --permanent --add-port=22/tcp
