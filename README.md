@@ -27,3 +27,6 @@ echo "AllowUsers root ssh_reader" >> /etc/ssh/sshd_config
 systemctl restart sshd.service
 
 ```
+
+### 更新防火墙脚本
+wget -N https://raw.githubusercontent.com/hanjun806/tools/main/update_firewall.sh && bash update_firewall.sh
