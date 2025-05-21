@@ -25,11 +25,11 @@ systemctl restart docker
 # enwaiax/x-ui:alpha-zh
 
 # 安装XrayR
-docker run --restart=always \
---name xrayr -d \
--v /mnt/XrayR/:/etc/XrayR/ \
--v /mnt/data/cert:/etc/XrayR/cert \
---network=host ghcr.io/wyx2685/xrayr:master
+# docker run --restart=always \
+# --name xrayr -d \
+# -v /mnt/XrayR/:/etc/XrayR/ \
+# -v /mnt/data/cert:/etc/XrayR/cert \
+# --network=host ghcr.io/wyx2685/xrayr:master
 
 # 打开防火墙，动态端口处理
 sudo yum -y install firewalld
