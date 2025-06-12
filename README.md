@@ -28,5 +28,13 @@ systemctl restart sshd.service
 
 ```
 
+### ubuntu
+```
+sudo apt install -y wget
+
+wget -N https://raw.githubusercontent.com/hanjun806/tools/main/ubuntu_init.sh && bash ubuntu_init.sh
+
+```
+
 ### 更新防火墙脚本
 wget -N https://raw.githubusercontent.com/hanjun806/tools/main/update_firewall.sh && bash update_firewall.sh
