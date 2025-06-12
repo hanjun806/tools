@@ -10,55 +10,28 @@ systemctl enable docker.service
 systemctl start docker
 sudo docker --version
 
+# 打开防火墙，动态端口处理
+# sudo ufw disable
+# sudo systemctl stop ufw
+# sudo systemctl disable ufw
 
-# 配置 UFW 防火墙
-sudo apt install -y ufw
-set -e
+sudo apt install firewalld -y
+sudo systemctl enable firewalld
+sudo systemctl start firewalld
 
-echo "🔧 开始配置 UFW 防火墙..."
-
-# 开启 IP 转发
-echo "🛠️ 开启 IPv4 转发..."
-sudo sed -i 's/#net\/ipv4\/ip_forward=1/net\/ipv4\/ip_forward=1/' /etc/ufw/sysctl.conf
-
-# 配置端口转发规则
-echo "🔁 添加端口转发规则到 /etc/ufw/before.rules..."
-
-sudo sed -i '/^*nat/,$d' /etc/ufw/before.rules 2>/dev/null || true
-
-sudo tee -a /etc/ufw/before.rules > /dev/null << 'EOF'
-*nat
-:PREROUTING ACCEPT [0:0]
-:POSTROUTING ACCEPT [0:0]
--A PREROUTING -p tcp --dport 40000:41000 -j REDIRECT --to-port 5001
--A PREROUTING -p tcp --dport 41000:42000 -j REDIRECT --to-port 5002
--A PREROUTING -p tcp --dport 42000:43000 -j REDIRECT --to-port 5011
--A PREROUTING -p tcp --dport 43000:44000 -j REDIRECT --to-port 5012
-COMMIT
-EOF
-
-# 开放端口
-echo "🌐 开放端口..."
-sudo ufw allow 22/tcp
-sudo ufw allow 34500:34599/tcp
-
-# 添加 IP 白名单
-echo "🧾 添加 IP 白名单..."
-sudo ufw allow from 45.78.17.247
-sudo ufw allow from 144.34.238.10
-sudo ufw allow from 110.81.154.8
-sudo ufw allow from 47.254.86.140
-sudo ufw allow from 144.34.224.56
-sudo ufw allow from 47.97.109.44
-
-
-# 启用防火墙
-echo "✅ 启用 UFW 防火墙..."
-sudo ufw disable
-sudo ufw enable
-
-# 显示当前规则
-echo "📋 当前防火墙状态:"
-sudo ufw status numbered
-
-echo "🎉 UFW 配置完成！"
+firewall-cmd --permanent --add-port=22/tcp
+firewall-cmd --permanent --add-port=34500-34599/tcp
+firewall-cmd --permanent --add-forward-port=port=40000-41000:proto=tcp:toport=5001
+firewall-cmd --permanent --add-forward-port=port=41000-42000:proto=tcp:toport=5002
+firewall-cmd --permanent --add-forward-port=port=42000-43000:proto=tcp:toport=5011
+firewall-cmd --permanent --add-forward-port=port=43000-44000:proto=tcp:toport=5012
+firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="45.78.17.247" accept'
+firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="144.34.238.10" accept'
+firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="47.254.86.140" accept'
+firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="47.97.109.44" accept'
+firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="144.34.224.56" accept'
+firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="110.80.26.62" accept'
+firewall-cmd --reload
+firewall-cmd --list-all
+systemctl restart firewalld
+systemctl restart docker
