@@ -12,6 +12,7 @@ sudo docker --version
 
 
 # 配置 UFW 防火墙
+sudo apt install -y ufw
 set -e
 
 echo "🔧 开始配置 UFW 防火墙..."
