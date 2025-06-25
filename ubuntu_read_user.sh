@@ -1,36 +1,54 @@
 #!/bin/bash
 
-user=$1
-passwd=$2
+user="$1"
+passwd="$2"
 
-# 创建用户并设置 shell
-useradd -m -s /bin/bash "${user}"
+# 检查用户是否已存在
+if id "$user" &>/dev/null; then
+    echo "用户 $user 已存在，跳过创建。"
+else
+    echo "创建用户 $user..."
+    useradd -m -s /bin/bash "$user"
+    echo "${user}:${passwd}" | chpasswd
+fi
 
-# 设置密码
-echo "${user}:${passwd}" | chpasswd
+# 确保 home 目录存在
+HOME_DIR="/home/${user}"
+BIN_DIR="${HOME_DIR}/.bin"
 
-# 创建 bin 目录
-mkdir -p /home/${user}/.bin
+if [ ! -d "$HOME_DIR" ]; then
+    echo "用户目录 $HOME_DIR 不存在，手动创建..."
+    mkdir -p "$HOME_DIR"
+    chown "$user:$user" "$HOME_DIR"
+fi
 
-# 设置 .bash_profile
-cat > /home/${user}/.bash_profile <<EOF
-PATH=/home/${user}/.bin:\$PATH
+# 创建 .bin 目录
+mkdir -p "$BIN_DIR"
+
+# 创建 .bash_profile
+BASH_PROFILE="${HOME_DIR}/.bash_profile"
+cat > "$BASH_PROFILE" <<EOF
+PATH=${BIN_DIR}:\$PATH
 export PATH
 EOF
 
-# 权限设置
-chown root:root /home/${user}/.bash_profile
-chmod 755 /home/${user}/.bash_profile
+chown root:root "$BASH_PROFILE"
+chmod 755 "$BASH_PROFILE"
 
-# 创建常用命令的软链接（去除 cd）
-ln -s /usr/bin/wc /home/${user}/.bin/wc
-ln -s /usr/bin/tail /home/${user}/.bin/tail
-ln -s /bin/more /home/${user}/.bin/more
-ln -s /bin/cat /home/${user}/.bin/cat
-ln -s /bin/grep /home/${user}/.bin/grep
-ln -s /usr/bin/find /home/${user}/.bin/find
-ln -s /bin/pwd /home/${user}/.bin/pwd
-ln -s /bin/ls /home/${user}/.bin/ls
-ln -s /bin/less /home/${user}/.bin/less
-ln -s /bin/tar /home/${user}/.bin/tar
-ln -s /bin/echo /home/${user}/.bin/echo
+# 链接常用命令（排除 cd）
+ln -sf /usr/bin/wc   "${BIN_DIR}/wc"
+ln -sf /usr/bin/tail "${BIN_DIR}/tail"
+ln -sf /bin/more     "${BIN_DIR}/more"
+ln -sf /bin/cat      "${BIN_DIR}/cat"
+ln -sf /bin/grep     "${BIN_DIR}/grep"
+ln -sf /usr/bin/find "${BIN_DIR}/find"
+ln -sf /bin/pwd      "${BIN_DIR}/pwd"
+ln -sf /bin/ls       "${BIN_DIR}/ls"
+ln -sf /bin/less     "${BIN_DIR}/less"
+ln -sf /bin/tar      "${BIN_DIR}/tar"
+ln -sf /bin/echo     "${BIN_DIR}/echo"
+
+# 修正权限
+chown -R "$user:$user" "$BIN_DIR"
+
+echo "✅ 用户 $user 设置完成"
