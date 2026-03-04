@@ -11,9 +11,9 @@ systemctl start docker
 sudo docker --version
 
 # 打开防火墙，动态端口处理
-# sudo ufw disable
-# sudo systemctl stop ufw
-# sudo systemctl disable ufw
+sudo ufw disable
+sudo systemctl stop ufw
+sudo systemctl disable ufw
 
 sudo apt install firewalld -y
 sudo systemctl enable firewalld
@@ -29,9 +29,12 @@ firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="45.
 firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="144.34.238.10" accept'
 firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="47.254.86.140" accept'
 firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="47.97.109.44" accept'
+firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="144.34.238.10" accept'
+firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="47.251.7.102" accept'
 firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="144.34.224.56" accept'
-firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="110.80.26.62" accept'
 firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="118.31.113.108" accept'
+firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="47.253.216.147" accept'
+firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="47.254.34.252" accept'
 firewall-cmd --reload
 firewall-cmd --list-all
 systemctl restart firewalld
