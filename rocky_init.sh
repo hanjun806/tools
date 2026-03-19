@@ -42,7 +42,7 @@ firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="144
 firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="47.254.86.140" accept'
 firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="47.97.109.44" accept'
 firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="144.34.224.56" accept'
-firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="110.80.26.62" accept'
+firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="117.29.172.182" accept'
 firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="118.31.113.108" accept'
 firewall-cmd --reload
 firewall-cmd --list-all
